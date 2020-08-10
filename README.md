@@ -1,13 +1,14 @@
 # OPCDAClientSync
-c++ class for easy interaction with OPC servers of the OPC DA specification
+c++ class for easy interaction with OPC servers of the OPC DA 2.05a specification
 
 ## Description
-* OPCDAClientSync written in C++, Both X86/X64 supported
-* Supported only sync read and write operations from OPC DA specification version 2.05A
+* OPCDAClientSync written in C++
+* Supported both versions **X86** and **X64**
+* Supported only **sync read** and **sync write** operations from OPC DA 2.05a specification
 * Tested on 
 	* Windows 10 (x64) with VS2019 build with x86 project.
 	* Windows 10 (x64) with VS2019 build with x64 project.
-* Only two files for usage: OPCDAClientSync.h and OPCDAClientSync.cpp
+* Only two files for usage: `OPCDAClientSync.h` and `OPCDAClientSync.cpp`
 * No external dependencies
 	
 	
@@ -30,8 +31,8 @@ void main(void)
 }
 ```
 ## Tips
-* OPCDAClientSync::Initialize() must be called in every thread, before using this class
-* OPCDAClientSync::Uninitialize() must be called in every thread, after using this class
+* `OPCDAClientSync::Initialize()` must be called in every thread, before using this class
+* `OPCDAClientSync::Uninitialize()` must be called in every thread, after using this class
 
 ## Detail & ChangeLog
 * Date: 2020-08-10
