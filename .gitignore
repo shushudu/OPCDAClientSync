@@ -3,3 +3,6 @@
 ################################################################################
 
 /Debug
+/x64/Debug
+/.vs/OPCDAClientSync/v16
+/OPCDAClientSync.vcxproj.user
