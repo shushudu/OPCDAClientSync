@@ -25,9 +25,9 @@ c++ class for easy interaction with OPC servers of the OPC DA 2.05a specificatio
 
 void test(void)
 {
-	OPCDAClientSync opc (L"OPC.Server.ProgId.1.0");
-	opc.WriteItem (L"opc.item.name", L"aaa");
-	std::wstring aaa = opc.ReadItem (L"opc.item.name");
+	OPCDAClientSync opc (L"Graybox.Simulator.1");
+	opc.WriteItem (L"storage.string.reg01", L"aaa");
+	std::wstring aaa = opc.ReadItem (L"storage.string.reg01");
 }
 
 void main(void)
