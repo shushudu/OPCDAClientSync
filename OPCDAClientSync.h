@@ -6,14 +6,10 @@
 
 typedef DWORD OPCHANDLE;
 
-enum OPCDATASOURCE
+enum class OPCDATASOURCE
 {	OPC_DS_CACHE	= 1,
     OPC_DS_DEVICE	= OPC_DS_CACHE + 1
 };
-
-enum OPCSERVERSTATE {};
-
-enum OPCENUMSCOPE {};
 
 struct OPCITEMSTATE
 {
@@ -22,21 +18,6 @@ struct OPCITEMSTATE
     WORD wQuality;
     WORD wReserved;
     VARIANT vDataValue;
-};
-
-struct OPCSERVERSTATUS
-{
-    FILETIME ftStartTime;
-    FILETIME ftCurrentTime;
-    FILETIME ftLastUpdateTime;
-    OPCSERVERSTATE dwServerState;
-    DWORD dwGroupCount;
-    DWORD dwBandWidth;
-    WORD wMajorVersion;
-    WORD wMinorVersion;
-    WORD wBuildNumber;
-    WORD wReserved;
-    /* [string] */ LPWSTR szVendorInfo;
 };
 
 struct OPCITEMDEF
@@ -77,58 +58,20 @@ IOPCServer : IUnknown
         /* [in] */ REFIID riid,
         /* [iid_is][out] */ LPUNKNOWN *ppUnk) = 0;
 
-    virtual HRESULT STDMETHODCALLTYPE GetErrorString( 
-        /* [in] */ HRESULT dwError,
-        /* [in] */ LCID dwLocale,
-        /* [string][out] */ LPWSTR *ppString) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE GetGroupByName( 
-        /* [string][in] */ LPCWSTR szName,
-        /* [in] */ REFIID riid,
-        /* [iid_is][out] */ LPUNKNOWN *ppUnk) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE GetStatus( 
-        /* [out] */ OPCSERVERSTATUS **ppServerStatus) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE RemoveGroup( 
-        /* [in] */ OPCHANDLE hServerGroup,
-        /* [in] */ BOOL bForce) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE CreateGroupEnumerator( 
-        /* [in] */ OPCENUMSCOPE dwScope,
-        /* [in] */ REFIID riid,
-        /* [iid_is][out] */ LPUNKNOWN *ppUnk) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetErrorString() = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetGroupByName() = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetStatus() = 0;
+    virtual HRESULT STDMETHODCALLTYPE RemoveGroup() = 0;
+    virtual HRESULT STDMETHODCALLTYPE CreateGroupEnumerator() = 0;
 };
 
 MIDL_INTERFACE("39c13a50-011e-11d0-9675-0020afd8adb3")
 IOPCGroupStateMgt : IUnknown
 {
-    virtual HRESULT STDMETHODCALLTYPE GetState( 
-        /* [out] */ DWORD *pUpdateRate,
-        /* [out] */ BOOL *pActive,
-        /* [string][out] */ LPWSTR *ppName,
-        /* [out] */ LONG *pTimeBias,
-        /* [out] */ FLOAT *pPercentDeadband,
-        /* [out] */ DWORD *pLCID,
-        /* [out] */ OPCHANDLE *phClientGroup,
-        /* [out] */ OPCHANDLE *phServerGroup) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE SetState( 
-        /* [in][unique] */ DWORD *pRequestedUpdateRate,
-        /* [out] */ DWORD *pRevisedUpdateRate,
-        /* [in][unique] */ BOOL *pActive,
-        /* [in][unique] */ LONG *pTimeBias,
-        /* [in][unique] */ FLOAT *pPercentDeadband,
-        /* [in][unique] */ DWORD *pLCID,
-        /* [in][unique] */ OPCHANDLE *phClientGroup) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE SetName( 
-        /* [string][in] */ LPCWSTR szName) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE CloneGroup( 
-        /* [string][in] */ LPCWSTR szName,
-        /* [in] */ REFIID riid,
-        /* [iid_is][out] */ LPUNKNOWN *ppUnk) = 0;
+    virtual HRESULT STDMETHODCALLTYPE GetState() = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetState() = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetName() = 0;
+    virtual HRESULT STDMETHODCALLTYPE CloneGroup() = 0;
 };
 
 MIDL_INTERFACE("39c13a52-011e-11d0-9675-0020afd8adb3")
@@ -157,42 +100,13 @@ IOPCItemMgt : IUnknown
         /* [size_is][size_is][out] */ OPCITEMRESULT **ppAddResults,
         /* [size_is][size_is][out] */ HRESULT **ppErrors) = 0;
 
-    virtual HRESULT STDMETHODCALLTYPE ValidateItems( 
-        /* [in] */ DWORD dwCount,
-        /* [size_is][in] */ OPCITEMDEF *pItemArray,
-        /* [in] */ BOOL bBlobUpdate,
-        /* [size_is][size_is][out] */ OPCITEMRESULT **ppValidationResults,
-        /* [size_is][size_is][out] */ HRESULT **ppErrors) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE RemoveItems( 
-        /* [in] */ DWORD dwCount,
-        /* [size_is][in] */ OPCHANDLE *phServer,
-        /* [size_is][size_is][out] */ HRESULT **ppErrors) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE SetActiveState( 
-        /* [in] */ DWORD dwCount,
-        /* [size_is][in] */ OPCHANDLE *phServer,
-        /* [in] */ BOOL bActive,
-        /* [size_is][size_is][out] */ HRESULT **ppErrors) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE SetClientHandles( 
-        /* [in] */ DWORD dwCount,
-        /* [size_is][in] */ OPCHANDLE *phServer,
-        /* [size_is][in] */ OPCHANDLE *phClient,
-        /* [size_is][size_is][out] */ HRESULT **ppErrors) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE SetDatatypes( 
-        /* [in] */ DWORD dwCount,
-        /* [size_is][in] */ OPCHANDLE *phServer,
-        /* [size_is][in] */ VARTYPE *pRequestedDatatypes,
-        /* [size_is][size_is][out] */ HRESULT **ppErrors) = 0;
-
-    virtual HRESULT STDMETHODCALLTYPE CreateEnumerator( 
-        /* [in] */ REFIID riid,
-        /* [iid_is][out] */ LPUNKNOWN *ppUnk) = 0;
+    virtual HRESULT STDMETHODCALLTYPE ValidateItems() = 0;
+    virtual HRESULT STDMETHODCALLTYPE RemoveItems() = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetActiveState() = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetClientHandles() = 0;
+    virtual HRESULT STDMETHODCALLTYPE SetDatatypes() = 0;
+    virtual HRESULT STDMETHODCALLTYPE CreateEnumerator() = 0;
 };
-
-
 
 class OPCDAClientSync
 {

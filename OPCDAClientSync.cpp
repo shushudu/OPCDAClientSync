@@ -34,12 +34,11 @@ OPCDAClientSync::OPCDAClientSync (const std::wstring & serverProgID)
 	}
 
 	CComBSTR group_name = L"group";
-	FLOAT group_deadband = 0.0;
 	OPCHANDLE group_handle = 0;
 	DWORD group_revised_updaterate = 0;
 
 	ATL::CComPtr<IOPCGroupStateMgt>	pIOPCGroupStateMgt;
-	result = pIOPCServer->AddGroup (group_name, FALSE, 1000, 0, 0, &group_deadband, 0, &group_handle, &group_revised_updaterate, __uuidof(IOPCGroupStateMgt), ( LPUNKNOWN * ) &pIOPCGroupStateMgt);
+	result = pIOPCServer->AddGroup (group_name, FALSE, 1000, 0, NULL, NULL, 0, &group_handle, &group_revised_updaterate, __uuidof(IOPCGroupStateMgt), ( LPUNKNOWN * ) &pIOPCGroupStateMgt);
 	if (FAILED (result))
 	{
 		throw std::exception ("AddGroup failed");
@@ -102,7 +101,7 @@ std::wstring OPCDAClientSync::ReadItem (const std::wstring & name)
 	OPCITEMSTATE * itemState;
 	HRESULT * itemResult;
 
-	HRESULT result = m_pIOPCSyncIO->Read (OPC_DS_DEVICE, 1, &serverHandles, &itemState, &itemResult);
+	HRESULT result = m_pIOPCSyncIO->Read (OPCDATASOURCE::OPC_DS_DEVICE, 1, &serverHandles, &itemState, &itemResult);
 	if (FAILED (result))
 	{
 		throw std::exception ("Read failed");
