@@ -16,6 +16,7 @@ c++ class for easy interaction with OPC servers of the OPC DA 2.05a specificatio
 * Simple usage:
 	* Only two files for usage: `OPCDAClientSync.h` and `OPCDAClientSync.cpp`
 	* All readed and writed values is `std::wstring`.
+	* On any error throw `std::exception`
 * Included Visual Studio 2019 solution `OPCDAClientSync.sln` and project `OPCDAClientSync.vcxproj`
 	
 ## Usage
