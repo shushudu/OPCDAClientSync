@@ -3,7 +3,7 @@ c++ class for easy interaction with OPC servers of the OPC DA 2.05a specificatio
 
 ## Description
 * OPCDAClientSync written in C++
-* No external dependencies, only the ATL library is used (included as standart component for Visual Studio)
+* No external dependencies, only the ATL and Standard library is used (included as standart component for Visual Studio)
 * Supported both versions of client **X86** and **X64** for server **X86** and **X64** in any combination
 * Supported only **sync read** and **sync write** operations from OPC DA 2.05a specification
 * Low memory usage
