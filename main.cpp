@@ -1,23 +1,24 @@
 #include "OPCDAClientSync.h"
+#include <cassert>
 
 void main(void)
 {
 	OPCDAClientSync::Initialize();
 	{
-		OPCDAClientSync opc (L"OPC.Server.ProgId.1.0");
+		OPCDAClientSync opc (L"Graybox.Simulator.1");
 
-		for (int i = 0; i < 1000; ++i)
+		for (int i = 0; i < 100; ++i)
 		{
-			opc.WriteItem (L"opc.item.name", L"aaa");
-			//Sleep (5);
-			std::wstring aaa = opc.ReadItem (L"CKT.STORAGE.cmd");
-			//assert (L"aaa" == aaa);
+			opc.WriteItem (L"storage.string.reg01", L"aaa");
+			Sleep (5);
+			std::wstring aaa = opc.ReadItem (L"storage.string.reg01");
+			assert (L"aaa" == aaa);
 
 
-			opc.WriteItem (L"opc.item.name", L"bbb");
-			//Sleep (5);
-			std::wstring bbb = opc.ReadItem (L"opc.item.name");
-			//assert (L"bbb" == bbb);
+			opc.WriteItem (L"storage.string.reg01", L"bbb");
+			Sleep (5);
+			std::wstring bbb = opc.ReadItem (L"storage.string.reg01");
+			assert (L"bbb" == bbb);
 		}
 	}
 	OPCDAClientSync::Uninitialize ();

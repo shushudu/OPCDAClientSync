@@ -40,6 +40,7 @@ void main(void)
 ## Tips
 * `OPCDAClientSync::Initialize()` must be called in every thread, before using this class
 * `OPCDAClientSync::Uninitialize()` must be called in every thread, after using this class
+* Gray Simulator can be used for testing http://gray-box.net/download_graysim.php
 
 ## Detail & ChangeLog
 * Date: 2020-08-10
